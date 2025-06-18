@@ -1,0 +1,123 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { useLanguage } from '../contexts/LanguageContext'
+import {
+  Share2, Search, MessageCircle, UserPlus,
+  ChevronLeft, ChevronRight, Maximize, RotateCcw,
+  Circle, Briefcase, Play, BookOpen, HeartPulse, ArrowRight, // Icons for categories
+  Star, Moon, Sun, Sparkles, Heart, Calendar, Gem, Home, GraduationCap // New icons
+} from 'lucide-react'
+// import { pastelColors } from '@/app/components/Testimonials' // Keep commented out as cardGradients are now used
+import { ZodiacWheel } from './ZodiacWheel'
+import ArcCarousel from './ArcCarousel'
+import CardStack from './CardStack'
+
+// Define some soft gradients for cards
+const cardGradients = [
+  "from-purple-100 via-pink-100 to-red-100", // Brighter, cuter
+  "from-green-100 via-yellow-100 to-lime-100", // Another vibrant combo
+  "from-blue-100 via-cyan-100 to-indigo-100",
+  "from-orange-100 via-amber-100 to-yellow-100",
+  "from-fuchsia-100 via-rose-100 to-purple-100",
+  "from-teal-100 via-emerald-100 to-blue-100",
+];
+
+// Content constants
+const largeArticleCardContent = {
+  image: "https://via.placeholder.com/400x250/A6B7C3/FFFFFF?text=Astrology+Insight", // Placeholder for lamp image
+  title: {
+    en: "Nakshatra Gyaan",
+    hi: "नक्षत्र ज्ञान",
+  },
+  description: {
+    en: "Discover Your Celestial Path. Unlock the secrets of the cosmos and find your life's purpose through our spiritual services and expert guidance.",
+    hi: "अपना आकाशीय मार्ग खोजें। हमारी आध्यात्मिक सेवाओं और विशेषज्ञ मार्गदर्शन के माध्यम से ब्रह्मांड के रहस्यों को अनलॉक करें और अपने जीवन का उद्देश्य खोजें।",
+  },
+  author: { en: "Dr. Narendra Kumar Sharma", hi: "डॉ. नरेंद्र कुमार शर्मा" },
+  date: { en: "Jul 15, 2024", hi: "जुलाई 15, 2024" },
+};
+
+const coffeeArticleCardContent = {
+  // image: "https://via.placeholder.com/150/A6B7C3/FFFFFF?text=Cosmic+Coffee", // Placeholder for coffee image
+  title: {
+    en: "The Astrological Significance of Daily Rituals",
+    hi: "दैनिक अनुष्ठानों का ज्योतिषीय महत्व",
+  },
+  author: { en: "Priya Singh", hi: "प्रिया सिंह" },
+  // authorImage: "https://via.placeholder.com/30/C4D1D9/FFFFFF?text=PS",
+  date: { en: "Jul 10, 2024", hi: "जुलाई 10, 2024" },
+};
+
+const videoCardContent = {
+  // image: "https://via.placeholder.com/200x120/A6B7C3/FFFFFF?text=Nakshatra+Film", // Placeholder for building image
+  title: { en: "An Inspiring Short Film: Journey Through Nakshatras", hi: "एक प्रेरणादायक लघु फिल्म: नक्षत्रों के माध्यम से यात्रा" },
+  views: "80,989",
+};
+
+const profileCardContent = {
+  // image: "https://via.placeholder.com/80/C4D1D9/FFFFFF?text=AG", // Placeholder for Alex's image
+  name: { en: "Dr. Narendra Kumar Sharma", hi: "डॉ. नरेंद्र कुमार शर्मा" }, // Changed name
+  title: { en: "Vedic Astrologer", hi: "वैदिक ज्योतिषी" },
+  stats: [
+    { label: { en: "Readings", hi: "पठन" }, value: "34" },
+    { label: { en: "Clients", hi: "ग्राहक" }, value: "980" },
+    { label: { en: "Rating", hi: "रेटिंग" }, value: "4.9" },
+  ],
+};
+
+const categories = [
+  { icon: Circle, label: { en: "Nakshatras", hi: "नक्षत्र" } },
+  { icon: Briefcase, label: { en: "Horoscopes", hi: "राशिफल" } },
+  { icon: Play, label: { en: "Remedies", hi: "उपाय" } },
+  { icon: BookOpen, label: { en: "Vedic Texts", hi: "वैदिक ग्रंथ" } },
+  { icon: HeartPulse, label: { en: "Astro-Wellness", hi: "ज्योतिष-कल्याण" } },
+];
+
+const searchTags = [
+  { en: "Predictive", hi: "भविष्यवाचक" },
+  { en: "Compatibility", hi: "संगतता" },
+  { en: "Transits", hi: "गोचर" },
+  { en: "Remedies", hi: "उपाय" },
+  { en: "Dasha", hi: "दशा" },
+];
+
+export function HeroSection() {
+  return (
+    <section className="relative w-full min-h-[70vh] flex flex-col md:flex-row items-center justify-between bg-[#fdf6f2] px-6 py-16 overflow-hidden">
+      {/* Abstract shapes */}
+      <div className="absolute top-0 right-0 w-48 h-48 bg-orange-200 rounded-full opacity-60 z-0" style={{transform: 'translate(40%,-40%)'}} />
+      <div className="absolute bottom-0 left-0 w-40 h-10 bg-orange-100 rounded-full opacity-60 z-0" style={{transform: 'translate(-30%,30%)'}} />
+      {/* Left: Headline, description, button */}
+      <div className="relative z-10 flex-1 max-w-xl flex flex-col items-start justify-center gap-6">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#4b2e1e] leading-tight mb-2">Nakshatra Gyaan<br />Your Online Astrology Guide</h1>
+        <p className="text-base md:text-lg text-[#6b4c36] mb-2">Discover Your Celestial Path. Unlock the secrets of the cosmos and find your life's purpose through our spiritual services and expert guidance.</p>
+        <Link href="/about" className="px-8 py-3 rounded-lg bg-[#4b2e1e] text-white text-lg font-semibold shadow hover:bg-[#6b4c36] transition-all">Explore</Link>
+      </div>
+      {/* Right: Image and stats */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center mt-12 md:mt-0 md:ml-12">
+        <div className="relative w-80 h-96 bg-white rounded-[40px] overflow-hidden shadow-xl flex items-center justify-center">
+          <Image src="/images/ASTRO.webp" alt="Astrology Hero" fill className="object-cover" />
+        </div>
+        {/* Stats */}
+        <div className="absolute right-[-120px] top-1/2 -translate-y-1/2 flex flex-col gap-8 text-right">
+          <div>
+            <div className="text-2xl md:text-3xl font-extrabold text-[#4b2e1e]">100%</div>
+            <div className="text-xs text-[#6b4c36] tracking-wide">ACCURATE<br />PREDICTIONS</div>
+          </div>
+          <div>
+            <div className="text-2xl md:text-3xl font-extrabold text-[#4b2e1e]">420+</div>
+            <div className="text-xs text-[#6b4c36] tracking-wide">ASTROLOGY<br />ARTICLES</div>
+          </div>
+          <div>
+            <div className="text-2xl md:text-3xl font-extrabold text-[#4b2e1e]">1200+</div>
+            <div className="text-xs text-[#6b4c36] tracking-wide">HAPPY<br />CLIENTS</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
