@@ -1,0 +1,126 @@
+'use client';
+
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { useLanguage } from '../contexts/useLanguage'
+import { Star, Calendar, Gem, BookOpen, HeartPulse } from 'lucide-react'
+import { useState, useEffect } from 'react'
+
+export default function HeroSection() {
+  const { t } = useLanguage();
+
+  return (
+    <section className="relative bg-[#F5EFE6] min-h-screen w-full py-36 px-2 font-['Montserrat',_Inter,_sans-serif] flex items-center justify-center">
+      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Main headline card */}
+        <Link href="/about" className="md:col-span-2 row-span-2 bg-black text-white rounded-2xl p-16 flex flex-col justify-between shadow-xl min-h-[520px] min-w-[520px] aspect-square transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[#77A656]">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Nakshatra Gyaan</h1>
+          <p className="text-lg text-gray-300 mb-8">Unlock the Secrets of the Cosmos with Vedic Astrology, Remedies, and Personalized Guidance</p>
+          <div className="flex items-center gap-4 mt-auto">
+            <img src="/public/images/ASTRO.webp" alt="Astrologer" className="w-20 h-20 rounded-full border-4 border-white object-cover" />
+            <span className="text-white/80">Your Trusted Astrologer</span>
+          </div>
+        </Link>
+        {/* Horoscope Insights */}
+        <Link href="/daily-horoscope" className="bg-[#e6f4d7] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[120px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#77A656]">
+          <span className="text-[#77A656] font-bold text-sm mb-2">HOROSCOPE INSIGHTS</span>
+          <span className="text-black font-semibold text-lg">Daily, Weekly & Yearly Horoscope Readings</span>
+        </Link>
+        {/* Remedies & Gemstones */}
+        <Link href="/services/gemstones" className="bg-[#f9e6e6] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[120px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#e26d5a]">
+          <span className="text-[#e26d5a] font-bold text-sm mb-2">REMEDIES & GEMSTONES</span>
+          <span className="text-black font-semibold text-lg">Authentic Gemstones, Yantras & Personalized Remedies</span>
+        </Link>
+        {/* Courses & Learning */}
+        <Link href="/courses" className="bg-[#e6eaf9] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[120px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#5a7be2]">
+          <span className="text-[#5a7be2] font-bold text-sm mb-2">ASTROLOGY COURSES</span>
+          <span className="text-black font-semibold text-lg">Learn Vedic Astrology, Numerology & Palmistry</span>
+        </Link>
+        {/* Personalized Guidance */}
+        <Link href="/consultations" className="bg-[#e6f9b7] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[260px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#77A656]">
+          <span className="text-[#77A656] font-bold text-sm mb-2">PERSONALIZED GUIDANCE</span>
+          <span className="text-black font-semibold text-lg mb-4">Talk to Expert Astrologers</span>
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-24 h-24 rounded-full bg-[#d2eaa3] flex items-center justify-center">
+              <span className="text-4xl">🔮</span>
+            </div>
+          </div>
+          <p className="text-gray-700 text-sm mt-4">Get answers to your questions about love, career, health, and more from certified experts.</p>
+        </Link>
+        {/* Puja & Rituals */}
+        <Link href="/online-puja" className="bg-[#f9e6e6] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[260px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#e26d5a]">
+          <span className="text-[#e26d5a] font-bold text-sm mb-2">PUJA & RITUALS</span>
+          <span className="text-black font-semibold text-lg mb-4">Book Online Puja & Ritual Services</span>
+          <div className="flex-1 flex items-center justify-center gap-2">
+            <span className="text-3xl">🕉️</span>
+            <span className="text-3xl">🪔</span>
+            <span className="text-3xl">📿</span>
+            <span className="text-3xl">🌺</span>
+          </div>
+        </Link>
+        {/* Blog & Articles */}
+        <Link href="/blog" className="bg-[#e6eaf9] rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[180px] md:col-span-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#5a7be2]">
+          <span className="text-[#5a7be2] font-bold text-sm mb-2">BLOG & ARTICLES</span>
+          <span className="text-black font-semibold text-lg mb-4">Explore Astrology, Remedies, and Spiritual Wisdom</span>
+          <div className="flex gap-4">
+            <span className="bg-white rounded-full p-3 shadow text-2xl">📖</span>
+            <span className="bg-white rounded-full p-3 shadow text-2xl">🌙</span>
+            <span className="bg-white rounded-full p-3 shadow text-2xl">✨</span>
+            <span className="bg-white rounded-full p-3 shadow text-2xl">🪐</span>
+          </div>
+        </Link>
+        {/* Key Stats */}
+        <Link href="/about" className="bg-white rounded-2xl p-6 flex flex-col justify-between shadow-xl min-h-[180px] transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#bfa76f]">
+          <span className="text-[#bfa76f] font-bold text-sm mb-2">NAKSHATRA GYAAN IN NUMBERS</span>
+          <span className="text-black font-semibold text-lg mb-4">10,000+ Happy Clients</span>
+          <div className="flex gap-1 items-end h-16">
+            <div className="bg-[#e6e6e6] w-8 h-8 rounded-t-lg" />
+            <div className="bg-[#bfa76f] w-8 h-12 rounded-t-lg" />
+            <div className="bg-[#5a7be2] w-8 h-10 rounded-t-lg" />
+            <div className="bg-[#e26d5a] w-8 h-16 rounded-t-lg" />
+          </div>
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+// Floating background elements (restored, light blurred circles)
+function FloatingElements() {
+  const [floatingElements, setFloatingElements] = useState<any[]>([]);
+
+  useEffect(() => {
+    const elements = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      size: Math.random() * 100 + 60,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 5
+    }));
+    setFloatingElements(elements);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {floatingElements.map((element) => (
+        <div
+          key={element.id}
+          className="absolute rounded-full opacity-20 blur-2xl animate-float"
+          style={{
+            width: `${element.size}px`,
+            height: `${element.size}px`,
+            left: `${element.x}%`,
+            top: `${element.y}%`,
+            background: `linear-gradient(45deg, 
+              ${element.id % 3 === 0 ? '#f3e8ff, #fbbf24' : 
+                element.id % 3 === 1 ? '#a7f3d0, #f9fafb' : 
+                '#fbcfe8, #fef3c7'})`,
+            animationDuration: `${element.duration}s`,
+            animationDelay: `${element.delay}s`
+          }}
+        />
+      ))}
+    </div>
+  );
+} 
