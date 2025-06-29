@@ -1,0 +1,111 @@
+'use client';
+
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { useLanguage } from '../contexts/useLanguage'
+import { Star, Calendar, Gem, BookOpen, HeartPulse } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { ZodiacWheel } from './ZodiacWheel'
+import { AnimatedStars } from './AnimatedStars'
+
+export default function HeroSection() {
+  return (
+    <section className="relative min-h-screen w-full flex items-center justify-center bg-[#F5EFE6] overflow-hidden">
+      {/* Animated cosmic background */}
+      <div className="absolute inset-0 z-0">
+        <AnimatedStars />
+      </div>
+      <div className="relative z-10 max-w-7xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 px-4 py-24 items-center">
+        {/* Left: Main content */}
+        <div className="flex flex-col gap-8">
+          <span className="uppercase text-xs tracking-widest text-[#77A656] font-bold">Nakshatra Gyan</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-[#23244a] leading-tight">
+            Unlock the Secrets of Your Stars
+          </h1>
+          <p className="text-lg text-gray-700 max-w-xl">
+            Dive deep into Vedic astrology, discover your nakshatra, and receive personalized guidance for every step of your cosmic journey. Trusted by thousands for accurate readings, remedies, and spiritual growth.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <a href="/consultations" className="inline-block bg-[#77A656] text-white font-semibold px-8 py-4 rounded-full text-lg shadow hover:bg-[#5a7be2] transition-colors">Start Your Reading</a>
+            <a href="/services" className="inline-block border border-[#77A656] text-[#23244a] font-semibold px-8 py-4 rounded-full text-lg hover:bg-[#e6f4e6] transition-colors">Explore Services</a>
+          </div>
+          {/* Trust/Stats cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+            <div className="bg-white/90 rounded-2xl shadow p-6 flex flex-col items-start">
+              <span className="text-[#77A656] font-bold text-lg mb-1">12,000+</span>
+              <span className="text-gray-700 text-base">Consultations Delivered</span>
+            </div>
+            <div className="bg-white/90 rounded-2xl shadow p-6 flex flex-col items-start">
+              <span className="text-[#bfa76f] font-bold text-lg mb-1">Expert Astrologers</span>
+              <span className="text-gray-700 text-base">Personalized Remedies</span>
+            </div>
+          </div>
+        </div>
+        {/* Right: Visual collage */}
+        <div className="relative flex flex-col items-center justify-center gap-8">
+          {/* Zodiac wheel illustration */}
+          <div className="w-72 h-72 mx-auto mb-4">
+            <ZodiacWheel />
+          </div>
+          {/* Astrology images collage */}
+          <div className="flex gap-4">
+            <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-lg border-4 border-[#ACBF65] bg-white">
+              <Image src="/images/ASTRO.webp" alt="Astrology" fill className="object-cover" />
+            </div>
+            <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-lg border-4 border-[#bfa76f] bg-white">
+              <Image src="/images/birth_chart_mockup.jpg" alt="Birth Chart" fill className="object-cover" />
+            </div>
+            <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-lg border-4 border-[#77A656] bg-white">
+              <Image src="/images/blog/gemstones.jpg" alt="Gemstones" fill className="object-cover" />
+            </div>
+          </div>
+          {/* SVG illustration */}
+          <div className="w-40 h-40 mt-4">
+            <Image src="/images/astrology.svg" alt="Astrology SVG" width={160} height={160} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Floating background elements (restored, light blurred circles)
+function FloatingElements() {
+  const [floatingElements, setFloatingElements] = useState<any[]>([]);
+
+  useEffect(() => {
+    const elements = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      size: Math.random() * 100 + 60,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 5
+    }));
+    setFloatingElements(elements);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {floatingElements.map((element) => (
+        <div
+          key={element.id}
+          className="absolute rounded-full opacity-20 blur-2xl animate-float"
+          style={{
+            width: `${element.size}px`,
+            height: `${element.size}px`,
+            left: `${element.x}%`,
+            top: `${element.y}%`,
+            background: `linear-gradient(45deg, 
+              ${element.id % 3 === 0 ? '#f3e8ff, #fbbf24' : 
+                element.id % 3 === 1 ? '#a7f3d0, #f9fafb' : 
+                '#fbcfe8, #fef3c7'})`,
+            animationDuration: `${element.duration}s`,
+            animationDelay: `${element.delay}s`
+          }}
+        />
+      ))}
+    </div>
+  );
+} 
