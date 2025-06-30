@@ -1,0 +1,136 @@
+'use client';
+
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { useLanguage } from '../contexts/useLanguage'
+import { Star, Calendar, Gem, BookOpen, HeartPulse } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { AnimatedStars } from './AnimatedStars'
+
+const cardImages = [
+  [
+    '/images/astrology.svg',
+    '/images/blog/vedic-astrology.jpg',
+    '/images/astrology_app_mockup.jpg',
+  ],
+  [
+    '/images/palm.svg',
+    '/images/blog/gemstones.jpg',
+    '/images/course-1.webp',
+  ],
+  [
+    '/images/Numerology.svg',
+    '/images/course-2.webp',
+    '/images/course-3.webp',
+  ],
+  [
+    '/images/tarot-banner.jpg',
+    '/images/course-4.webp',
+    '/images/course-5.webp',
+  ],
+  [
+    '/images/birth_chart_mockup.jpg',
+    '/images/course-6.webp',
+    '/images/ASTRO.webp',
+  ],
+];
+
+export default function HeroSection() {
+  // State for each card's current image index
+  const [indices, setIndices] = useState([0, 0, 0, 0, 0]);
+
+  useEffect(() => {
+    const intervals = indices.map((_, i) =>
+      setInterval(() => {
+        setIndices(prev => {
+          const newIndices = [...prev];
+          newIndices[i] = (newIndices[i] + 1) % cardImages[i].length;
+          return newIndices;
+        });
+      }, 2500 + i * 400)
+    );
+    return () => intervals.forEach(clearInterval);
+  }, []);
+
+  return (
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-start bg-[#F5E8CB] overflow-hidden pt-24 pb-12 px-2">
+      {/* Animated cosmic background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <AnimatedStars />
+      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        className="relative z-10 w-full max-w-7xl mx-auto rounded-3xl bg-[#F5E8CB] shadow-lg px-12 py-16 flex flex-col md:flex-row items-center md:items-start gap-8 border border-[#e7dbc2]"
+      >
+        {/* Left: Main heading */}
+        <div className="flex-1 flex flex-col justify-center items-start gap-4">
+          <span className="uppercase text-xs tracking-widest text-[#77A656] font-bold mb-2">Nakshatra Gyan</span>
+          <h1 className="text-6xl md:text-7xl font-extrabold text-black leading-tight mb-4 text-left">
+            Discover Your Cosmic Blueprint
+          </h1>
+        </div>
+        {/* Right: Description and CTA */}
+        <div className="flex-1 flex flex-col justify-center items-start md:items-end gap-6">
+          <p className="text-lg text-gray-700 max-w-md mb-4 text-right">
+            Unlock the secrets of your nakshatra and explore personalized Vedic astrology insights. Get expert guidance, remedies, and cosmic wisdom for your life's journey.
+          </p>
+          <a href="/consultations" className="inline-block bg-black text-white font-bold px-8 py-4 rounded-full text-lg shadow hover:bg-[#23244a] transition-colors">Get Your Nakshatra Report</a>
+        </div>
+      </motion.div>
+      {/* Row of 5 astrology image cards styled like the reference */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto mt-12 flex flex-row justify-center gap-8">
+        {cardImages.map((images, i) => (
+          <div
+            key={i}
+            className="rounded-xl overflow-hidden shadow-lg bg-white w-64 h-64 flex items-center justify-center border border-[#e7dbc2] transition-transform duration-500 hover:scale-105 hover:shadow-2xl"
+          >
+            <img src={images[indices[i]]} alt="Astrology Illustration" className="w-48 h-48 object-contain transition-all duration-700" loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// Floating background elements (restored, light blurred circles)
+function FloatingElements() {
+  const [floatingElements, setFloatingElements] = useState<any[]>([]);
+
+  useEffect(() => {
+    const elements = Array.from({ length: 8 }, (_, i) => ({
+      id: i,
+      size: Math.random() * 100 + 60,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 5
+    }));
+    setFloatingElements(elements);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {floatingElements.map((element) => (
+        <div
+          key={element.id}
+          className="absolute rounded-full opacity-20 blur-2xl animate-float"
+          style={{
+            width: `${element.size}px`,
+            height: `${element.size}px`,
+            left: `${element.x}%`,
+            top: `${element.y}%`,
+            background: `linear-gradient(45deg, 
+              ${element.id % 3 === 0 ? '#f3e8ff, #fbbf24' : 
+                element.id % 3 === 1 ? '#a7f3d0, #f9fafb' : 
+                '#fbcfe8, #fef3c7'})`,
+            animationDuration: `${element.duration}s`,
+            animationDelay: `${element.delay}s`
+          }}
+        />
+      ))}
+    </div>
+  );
+} 
