@@ -1,0 +1,107 @@
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+
+const products = [
+  {
+    title: 'Gemstones Collection',
+    subtext: 'Discover authentic, energised gemstones for every need.',
+    offer: 'Flat 20% OFF + Free Energization',
+    link: '/shop?category=gemstones',
+    bg: '#ffe6b3', // Vibrant yellow-orange
+  },
+  {
+    title: 'Yantras',
+    subtext: 'Sacred yantras for prosperity, protection, and peace.',
+    offer: 'Buy 1 Get 1 Free on Select Yantras!',
+    link: '/shop?category=yantras',
+    bg: '#b3e6ff', // Vibrant blue
+  },
+  {
+    title: 'Spiritual Accessories',
+    subtext: 'Premium malas, bracelets, and more for your spiritual journey.',
+    offer: 'Upto 30% OFF on Spiritual Accessories',
+    link: '/shop?category=spiritual-accessories',
+    bg: '#ffd6e0', // Vibrant pink
+  },
+  {
+    title: 'Rudraksha Collection',
+    subtext: 'Original, certified Rudraksha beads and malas.',
+    offer: 'Special Combo Offers on Rudraksha Sets',
+    link: '/shop?category=rudraksha',
+    bg: '#d6ffd6', // Vibrant green
+  },
+  {
+    title: 'Puja Samagri & Ritual Kits',
+    subtext: 'Everything you need for powerful Vedic rituals.',
+    offer: 'Save 15% on Complete Puja Kits',
+    link: '/shop?category=puja-samagri',
+    bg: '#f7cfff', // Vibrant purple
+  },
+];
+
+function getContrastColor(bg: string): string {
+  if (!bg) return '#23244a';
+  const c = bg.substring(1);
+  const rgb = parseInt(c, 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >> 8) & 0xff;
+  const b = (rgb >> 0) & 0xff;
+  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+  return luminance > 180 ? '#23244a' : '#fff';
+}
+
+export default function HeroSlider() {
+  const [current, setCurrent] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const SLIDE_INTERVAL = 4000;
+
+  useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setCurrent((prev) => (prev + 1) % products.length);
+    }, SLIDE_INTERVAL);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [current]);
+
+  const contrast = getContrastColor(products[current].bg);
+
+  return (
+    <section className="w-full relative overflow-hidden min-h-[70vh] flex items-center justify-center" style={{ minHeight: '80vh' }}>
+      <div className="absolute inset-0 w-full h-full z-0 transition-colors duration-700" style={{ background: products[current].bg }} />
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 px-4">
+        <div className="w-full flex flex-col items-center justify-center text-center">
+          <h1 className="text-5xl md:text-7xl font-extrabold font-serif mb-6 drop-shadow-lg tracking-tight" style={{ color: contrast, textShadow: '0 2px 16px #0002' }}>{products[current].title}</h1>
+          <div className="text-2xl md:text-4xl font-bold mb-4" style={{ color: contrast, background: contrast === '#fff' ? '#23244a22' : '#fff8', borderRadius: '1.5rem', padding: '0.5rem 2rem', display: 'inline-block', letterSpacing: '0.03em' }}>{products[current].offer}</div>
+          <p className="text-xl md:text-2xl mb-10 font-medium max-w-2xl mx-auto" style={{ color: contrast + 'cc' }}>{products[current].subtext}</p>
+          <Link href={products[current].link}>
+            <span
+              className="px-10 py-4 rounded-full font-extrabold shadow-xl transition-all text-2xl border-2"
+              style={{
+                background: contrast,
+                color: products[current].bg,
+                borderColor: contrast,
+                boxShadow: '0 4px 32px 0 #23244a22',
+              }}
+            >
+              Shop Now
+            </span>
+          </Link>
+        </div>
+        {/* Dots */}
+        <div className="flex gap-3 mt-14">
+          {products.map((_, idx) => (
+            <button
+              key={idx}
+              className={`w-4 h-4 rounded-full border-2 transition-all duration-300 ${idx === current ? 'scale-125 border-[#23244a]' : 'border-gray-400 opacity-60'}`}
+              style={{ background: idx === current ? '#23244a' : 'transparent' }}
+              onClick={() => setCurrent(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+} 
