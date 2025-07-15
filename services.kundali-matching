@@ -1,0 +1,111 @@
+"use client";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+
+const months = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function getDays(month: string, year: number) {
+  const monthIndex = months.indexOf(month);
+  return new Date(year, monthIndex + 1, 0).getDate();
+}
+
+const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i + 1);
+const hours = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'));
+const minutes = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0'));
+
+function PersonForm({ prefix }: { prefix: string }) {
+  const [month, setMonth] = useState(months[0]);
+  const [day, setDay] = useState(1);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [hour, setHour] = useState('12');
+  const [minute, setMinute] = useState('00');
+  const [ampm, setAmpm] = useState('AM');
+  const [city, setCity] = useState('');
+  const [name, setName] = useState('');
+  const [dontKnowTime, setDontKnowTime] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      <label className="font-semibold text-base text-[#232323]">*Name:
+        <input type="text" className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#b89c6a]" placeholder={`Enter ${prefix}'s Name`} value={name} onChange={e => setName(e.target.value)} required />
+      </label>
+      <div>
+        <span className="font-semibold text-base text-[#232323]">*Birth Date:</span>
+        <div className="flex gap-2 mt-1">
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={month} onChange={e => setMonth(e.target.value)}>
+            {months.map(m => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={day} onChange={e => setDay(Number(e.target.value))}>
+            {Array.from({ length: getDays(month, year) }, (_, i) => i + 1).map(d => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={year} onChange={e => setYear(Number(e.target.value))}>
+            {years.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <span className="font-semibold text-base text-[#232323]">*Birth Time:</span>
+        <div className="flex gap-2 mt-1 items-center">
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={hour} onChange={e => setHour(e.target.value)} disabled={dontKnowTime}>
+            {hours.map(h => <option key={h} value={h}>{h}</option>)}
+          </select>
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={minute} onChange={e => setMinute(e.target.value)} disabled={dontKnowTime}>
+            {minutes.map(m => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="border border-gray-300 rounded-lg px-2 py-2" value={ampm} onChange={e => setAmpm(e.target.value)} disabled={dontKnowTime}>
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+          <label className="ml-2 text-sm text-[#232323] flex items-center gap-1">
+            <input type="checkbox" checked={dontKnowTime} onChange={e => setDontKnowTime(e.target.checked)} /> Don't Know Birth Time
+          </label>
+        </div>
+      </div>
+      <label className="font-semibold text-base text-[#232323]">*Birth City:
+        <input type="text" className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#b89c6a]" placeholder="City" value={city} onChange={e => setCity(e.target.value)} required />
+      </label>
+      <div className="text-center text-[#b89c6a] text-sm cursor-pointer">[ + Advanced options / Custom Location ]</div>
+    </div>
+  );
+}
+
+export default function KundaliMatchingPage() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-[#fffbe9] via-[#f7f5ed] to-[#fff] py-8">
+      <div className="max-w-3xl w-full text-center mb-2">
+        <h2 className="text-lg font-medium text-[#b89c6a]">KUNDALI MATCHING BY DATE OF BIRTH</h2>
+        <div className="text-xl font-bold text-[#232323] mb-1">Get Free Online Kundali Matching Report For Marriage</div>
+      </div>
+      <form className="w-full max-w-4xl bg-white rounded-2xl shadow-lg border border-[#e6c77e] p-6 md:p-10 flex flex-col gap-6" style={{ boxShadow: '0 4px 24px 0 rgba(36,34,68,0.08)' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <div className="text-lg font-semibold text-[#232323] mb-4">Enter Boy's Detail</div>
+            <PersonForm prefix="Boy" />
+          </div>
+          <div>
+            <div className="text-lg font-semibold text-[#232323] mb-4">Enter Girl's Detail</div>
+            <PersonForm prefix="Girl" />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-2">
+          <div />
+          <div>
+            <label className="font-semibold text-base text-[#232323]">Email:
+              <input type="email" className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#b89c6a]" placeholder="Email (optional)" value={email} onChange={e => setEmail(e.target.value)} />
+            </label>
+          </div>
+        </div>
+        <div className="flex justify-end gap-4 mt-4">
+          <button type="reset" className="px-8 py-2 rounded-lg border border-[#b89c6a] text-[#b89c6a] font-semibold bg-white hover:bg-[#f7f5ed] transition">Clear</button>
+          <button type="submit" className="px-8 py-2 rounded-lg bg-[#b89c6a] text-white font-semibold shadow hover:bg-[#a88a4c] transition" disabled={loading}>{loading ? 'Matching...' : 'Match Kundali'}</button>
+        </div>
+      </form>
+    </div>
+  );
+} 
