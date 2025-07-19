@@ -1,0 +1,83 @@
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+
+const categories = [
+  {
+    name: 'Gemstones & Crystals',
+    image: '/images/gemstones.jpg',
+    slug: 'gemstones-crystals',
+  },
+  {
+    name: 'Rudraksha & Malas',
+    image: '/images/course-2.jpg',
+    slug: 'rudraksha-malas',
+  },
+  {
+    name: 'Bracelets',
+    image: '/images/dhan-yog-bracelet.jpg',
+    slug: 'bracelets',
+  },
+  {
+    name: 'Combos & Kits',
+    image: '/images/pyrite.jpg',
+    slug: 'combos-kits',
+  },
+  {
+    name: 'Yantras & Plates',
+    image: '/images/selenite-plate.jpg',
+    slug: 'yantras-plates',
+  },
+  {
+    name: 'Astrology Reports',
+    image: '/images/birth_chart_mockup.jpg',
+    slug: 'astrology-reports',
+  },
+  {
+    name: 'Spiritual Accessories',
+    image: '/images/astrowellness.jpg',
+    slug: 'spiritual-accessories',
+  },
+  {
+    name: 'Remedies',
+    image: '/images/remedies.jpg',
+    slug: 'remedies',
+  },
+  {
+    name: 'Books',
+    image: '/images/books.jpg',
+    slug: 'books',
+  },
+  {
+    name: 'Tools',
+    image: '/images/tools.jpg',
+    slug: 'tools',
+  },
+];
+
+export default function ShopByCategory({ limit }: { limit?: number }) {
+  const shownCategories = limit ? categories.slice(0, limit) : categories;
+  return (
+    <section className="w-full my-16 flex flex-col items-center">
+      <div className="w-full flex items-center justify-between max-w-5xl mb-10 px-4">
+        <h2 className="text-3xl md:text-4xl font-bold block text-gray-900" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.01em' }}>
+          Explore the Realms
+        </h2>
+        <Link href="/shop/categories" className="text-amber-600 font-semibold text-lg hover:underline transition-all">See All</Link>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 w-full max-w-5xl px-4">
+        {shownCategories.map((cat) => (
+          <Link key={cat.slug} href={`/shop/category/${cat.slug}`} className="flex flex-col items-center group focus:outline-none">
+            <motion.div
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              className="rounded-full border-4 border-yellow-400 w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 flex items-center justify-center overflow-hidden bg-white shadow-md transition-all"
+            >
+              <img src={cat.image} alt={cat.name} className="object-cover w-full h-full transition-all" onError={(e) => { e.currentTarget.src = '/images/placeholder.png'; }} />
+            </motion.div>
+            <span className="mt-4 text-center text-base md:text-lg font-semibold leading-tight w-full text-gray-800" style={{ fontFamily: 'Playfair Display, serif' }}>{cat.name}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+} 
