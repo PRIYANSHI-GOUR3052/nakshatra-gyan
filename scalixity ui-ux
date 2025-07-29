@@ -1,0 +1,193 @@
+"use client";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/src/app/components/ui/card";
+import { Input } from "@/src/app/components/ui/input";
+import { Textarea } from "@/src/app/components/ui/textarea";
+import { Button } from "@/src/app/components/ui/button";
+import { Label } from "@/src/app/components/ui/label";
+import { Checkbox } from "@/src/app/components/ui/checkbox";
+import { useToast } from "@/src/app/hooks/use-toast";
+import * as React from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/src/app/components/ui/dialog";
+import { motion } from "framer-motion";
+import { ContestBanner } from "@/src/app/components/banners";
+import { CompetitionAbout } from "./about";
+
+interface FormInputs {
+  name: string;
+  email: string;
+  phone: string;
+  portfolio: string;
+  experience: string;
+  about: string;
+  agree: boolean;
+}
+
+export default function UIUXCampaignPage() {
+  const { toast } = useToast();
+  const [open, setOpen] = React.useState(false);
+  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<FormInputs>({
+    defaultValues: { experience: "Beginner" }
+  });
+
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    await new Promise((r) => setTimeout(r, 1000));
+    toast({
+      title: "Registration Successful!",
+      description: `Thank you for registering for the Scalixity UI/UX Competition. We will contact you soon.`,
+    });
+    reset();
+    setOpen(false);
+  };
+
+  return (
+    <div className="bg-[#FEFBF2] min-h-screen">
+      {/* Contest Banner */}
+      <div className="w-full pt-4">
+        <ContestBanner />
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative min-h-[60vh] flex items-center justify-center px-6 lg:px-12 xl:px-16 -mt-20">
+        <div className="container mx-auto text-center max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="space-y-8"
+          >
+            {/* Main Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight"
+            >
+              Scalixity UI/UX <span className="text-amber-600">Competition</span>
+            </motion.h1>
+
+            {/* Subheading */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-4xl mx-auto"
+            >
+              Join a global movement of designers shaping meaningful digital experiences. Compete with creatives worldwide, get recognized, and stand a chance to win a full-time role, internship, goodies, and global exposure.
+            </motion.p>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="pt-8"
+            >
+              <Button 
+                className="px-12 py-4 text-xl font-semibold bg-amber-600 hover:bg-amber-700 text-white rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:glow-amber-500" 
+                onClick={() => setOpen(true)}
+              >
+                Register Now
+              </Button>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Competition Details Section */}
+      <section className="py-20 px-6 lg:px-12 xl:px-16">
+        <div className="container mx-auto max-w-4xl">
+          <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-3xl overflow-hidden">
+            <CardHeader className="p-8">
+              <img src="/images/ui-ux-framework.svg" alt="Scalixity UI/UX Competition" className="w-full max-h-64 object-contain rounded-xl shadow mb-6" />
+              <CardTitle className="text-3xl md:text-4xl mb-4 text-gray-900">Competition Details</CardTitle>
+              <CardDescription className="text-gray-700 mb-6">
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-900">What You'll Get:</h3>
+                    <ul className="list-disc list-inside text-gray-700 text-base space-y-2">
+                      <li>Open to all students and professionals</li>
+                      <li>Team or solo participation allowed</li>
+                      <li>Submit your best UI/UX project or case study</li>
+                      <li>Winners get internship opportunities and goodies</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-3 text-gray-900">Competition Details:</h3>
+                    <ul className="list-disc list-inside text-gray-700 text-base space-y-2">
+                      <li><b>Theme:</b> "Design for Impact"</li>
+                      <li><b>Submission Deadline:</b> 9th August 2025, 12:00 PM IST</li>
+                      <li><b>Format:</b> Submit a Figma/Adobe XD link or PDF, plus a short write-up</li>
+                      <li><b>Judging Criteria:</b> Creativity, Usability, Visual Appeal, Problem Solving</li>
+                      <li><b>Prizes:</b> Internship offers, certificates, and exclusive Scalixity goodies</li>
+                    </ul>
+                  </div>
+                  <p className="mt-4">For more information, contact <a href="mailto:info@scalixity.com" className="underline text-amber-600">info@scalixity.com</a></p>
+                </div>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </section>
+
+      {/* Competition Details */}
+      <CompetitionAbout />
+      
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-lg w-full bg-white border border-primary/30">
+          <DialogHeader>
+            <DialogTitle className="text-black">Register for Scalixity UI/UX Competition</DialogTitle>
+            <DialogDescription className="text-gray-900">Fill the form below to participate in the competition.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input id="name" placeholder="Your Name" {...register("name", { required: "Name is required" })} />
+                  {errors.name && <span className="text-destructive text-xs">{errors.name.message}</span>}
+                </div>
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" placeholder="you@example.com" {...register("email", { required: "Email is required" })} />
+                  {errors.email && <span className="text-destructive text-xs">{errors.email.message}</span>}
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input id="phone" type="tel" placeholder="Phone Number" {...register("phone", { required: "Phone is required" })} />
+                  {errors.phone && <span className="text-destructive text-xs">{errors.phone.message}</span>}
+                </div>
+                <div>
+                  <Label htmlFor="experience">Experience Level</Label>
+                  <select id="experience" className="form-input" {...register("experience")}>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="portfolio">Portfolio Link</Label>
+                <Input id="portfolio" placeholder="https://yourportfolio.com" {...register("portfolio", { required: "Portfolio link is required" })} />
+                {errors.portfolio && <span className="text-destructive text-xs">{errors.portfolio.message}</span>}
+              </div>
+              <div>
+                <Label htmlFor="about">About You / Project</Label>
+                <Textarea id="about" placeholder="Tell us about yourself or your project..." {...register("about", { required: "This field is required" })} />
+                {errors.about && <span className="text-destructive text-xs">{errors.about.message}</span>}
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="agree" {...register("agree", { required: "You must agree to the terms" })} />
+                <Label htmlFor="agree" className="text-xs">I agree to the <a href="/terms" className="underline text-primary">terms and conditions</a>.</Label>
+                {errors.agree && <span className="text-destructive text-xs ml-2">{errors.agree.message as string}</span>}
+              </div>
+            </div>
+            <Button type="submit" className="w-full mt-6" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit Registration"}
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+} 
